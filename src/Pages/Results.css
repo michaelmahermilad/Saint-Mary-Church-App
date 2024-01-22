@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&display=swap');
+
+
+.main345{
+width:100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+}
+.card345{
+    margin: 1rem;
+    width:20%;
+    display: flex;
+    margin-bottom: 2rem;
+    background-color: rgba(255, 179, 0, 0.175);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 6px;
+}
+.title345{
+color:rgb(99, 73, 25);
+font-family: 'Harmattan', sans-serif;
+font-weight: 800;
+ 
+
+}
+.result345{
+    background-color: rgb(255, 255, 255);
+    color:rgb(192, 95, 31);
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-family: 'Harmattan', sans-serif;
+ 
+
+}
+.card345:hover{
+     
+    
+    display: flex;
+   
+    background-color: rgb(226, 201, 140);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    border-radius: 6px;
+}
+.title345:hover{
+color:rgb(48, 34, 8);
+font-family: 'Harmattan', sans-serif;
+font-weight: 800;
+ 
+
+}
+.result345:hover{
+    background-color: rgb(255, 255, 255);
+    color:rgb(192, 95, 31);
+    border-radius: 8px;
+    margin-top: 20px;
+    font-family: 'Harmattan', sans-serif;
+ 
+
+}
+@media (max-width:850px){
+    .main345{}
+    .card345{
+        width:45%;
+        padding: .5rem;
+        margin: .3rem;
+    }
+    .title345{}
+    .result345{
+       
+
+        padding: 6px;
+
+    }
+
+
+}

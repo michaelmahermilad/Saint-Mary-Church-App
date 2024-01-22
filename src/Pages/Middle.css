@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Harmattan:wght@400;700&display=swap');
+
+.Middle{
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+align-items: center;
+min-height: 5rem;
+min-width: 90%;
+margin: auto;
+ 
+}
+.value{
+   padding-top: 4rem;
+    font-size: 22px;
+    font-weight: 600;
+     font-family: 'Harmattan', sans-serif;
+}
