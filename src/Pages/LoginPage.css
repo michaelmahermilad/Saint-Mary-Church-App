@@ -1,0 +1,194 @@
+/* Use a modern, clean font */
+body, .login-container {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .login-container {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f6fb;
+  }
+  
+  /* Left side with background image and logo */
+  .login-left {
+    flex: 1.2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+  }
+  
+  .login-logo {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 120px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  /* Right side with form */
+  .login-right {
+    flex: 1;
+    padding: 60px 48px 40px 48px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 340px;
+    box-shadow: 0 0 24px rgba(0,0,0,0.04);
+  }
+  
+  h2 {
+    color: #002664;
+    margin-bottom: 32px;
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  .login-form label {
+    color: #002664;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%;
+    padding: 14px 12px;
+    border: 1.5px solid #bfc9d1;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    transition: border 0.2s;
+  }
+  
+  .login-form input[type="text"]:focus,
+  .login-form input[type="password"]:focus {
+    border: 1.5px solid #002664;
+    outline: none;
+  }
+  
+  .example-text {
+    color: #888;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+    margin-top: -10px;
+  }
+  
+  .keep-signed-in {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .keep-signed-in label {
+    font-weight: 400;
+    color: #333;
+  }
+  
+  .sign-in-btn {
+    background: linear-gradient(90deg, #002664 60%, #0057b8 100%);
+    color: #fff;
+    padding: 14px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.2s, transform 0.1s;
+  }
+  
+  .sign-in-btn:hover {
+    background: linear-gradient(90deg, #003580 60%, #0073e6 100%);
+    transform: translateY(-2px) scale(1.02);
+  }
+  
+  .login-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  
+  .login-links a {
+    color: #0057b8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.2s;
+  }
+  
+  .login-links a:hover {
+    color: #002664;
+    text-decoration: underline;
+  }
+  
+  .login-footer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: auto;
+    color: #002664;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  
+  .nsw-logo {
+    height: 38px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 900px) {
+    .login-container {
+      flex-direction: column;
+    }
+    .login-left, .login-right {
+      flex: none;
+      width: 100%;
+      min-width: unset;
+      box-shadow: none;
+    }
+    .login-left {
+      min-height: 180px;
+      height: 180px;
+    }
+    .login-logo {
+      top: 16px;
+      left: 16px;
+      width: 90px;
+      padding: 4px;
+    }
+    .login-right {
+      padding: 32px 16px 24px 16px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .login-right {
+      padding: 18px 4vw 12px 4vw;
+    }
+    .login-logo {
+      width: 70px;
+    }
+  }

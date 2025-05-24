@@ -1,14 +1,10 @@
-import firebase from "firebase/compat/app"; // Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-import { getDatabase, ref, set, onValue, remove } from "firebase/database";
- import "firebase/compat/firestore";
-import "firebase/compat/auth";
-import { GoogleAuthProvider  } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-   
   apiKey: "AIzaSyC0je3firquV-pcNWyLbHFUIFlVWXaGfbs",
   authDomain: "saint-mary-church.firebaseapp.com",
   databaseURL: "https://saint-mary-church-default-rtdb.europe-west1.firebasedatabase.app",
@@ -20,10 +16,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const database = getDatabase();
-const db = firebaseApp.firestore();
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const db = getFirestore(app);
+const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
- export default db;
-export { auth, provider, database, ref, set, onValue, remove };
+
+export { db, auth, provider, database };

@@ -1,9 +1,7 @@
 import React from 'react'
 import "./l.css"
-function Myload({load}) {
-  return (<>{<div style={{display:load?"none":"flex",width:"100vw",height:"100vh",position:"absolute",justifyContent:"center",zIndex:"8000"}}>
-
-  
+function Myload() {
+  return (<>
     <div class="container">
     <div class="dot dot-1"></div>
     <div class="dot dot-2"></div>
@@ -17,7 +15,7 @@ function Myload({load}) {
         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7"/>
       </filter>
     </defs>
-  </svg></div>}</>
+  </svg></>
   )
 }
 

@@ -18,13 +18,7 @@ import apps from "./apps.svg";
           <img
              className="imgLeft"
           />
-          <p className="NameLeft font77">
-            Hi,{" "}
-            {
-            "Welcome"
-               
-            }
-          </p>
+        
         </div>
         <h4 className="ayat font77">
           وأما غايةُ الوصيةِ فهي المحبة من قلبٍ طاهرٍ، وضميرٍ صالحٍ، وإيمانٍ بلا
@@ -33,6 +27,7 @@ import apps from "./apps.svg";
         <img src={logo1} className="img123" />
       </div>
       <div className="right123">
+        
         <NavLink 
           to="/data"
           className={() => (Page == "data" ? "el123" : "el1234")}
@@ -40,7 +35,7 @@ import apps from "./apps.svg";
           البيانات
           <img src={apps} className="icon123" />
         </NavLink>
-        <NavLink
+{/*        <NavLink
           to="/results"
           className={(isActive) =>
             Page == "results" ? " el123 font77" : "el1234 font77"
@@ -59,7 +54,7 @@ import apps from "./apps.svg";
           <img src={apps} className="icon123" />
         </NavLink>
 
-        <NavLink
+  <NavLink
           to="/studies"
           className={(isActive) =>
             Page == "studies" ? "el123 font77" : "el1234 font77"
@@ -68,6 +63,9 @@ import apps from "./apps.svg";
           الدراسات
           <img src={apps} className="icon123" />
         </NavLink>
+
+*/}
+      
       </div>
       <div className="container333">
         {Page == "results" ? (
@@ -91,8 +89,20 @@ import apps from "./apps.svg";
           </>
         ) : Page == "studies" ? (
           <Studies />
-        ) : (
-          <Data />
+        ) : (<>
+          <img
+          style={{
+            width: "90%",
+            margin: "auto",
+            marginTop: "2rem",
+            display: "block",
+            borderRadius: "20px",
+            marginBottom: "2rem",
+            boxShadow: ".3px 3px 10px grey",
+          }}
+          src={newr}
+        />{" "}
+          <Data /></>
         )}
       </div>
     </div>

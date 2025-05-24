@@ -1,7 +1,7 @@
 import React from 'react'
 import "./l.css"
 function Myload({load}) {
-  return (<>{<div style={{display:load?"none":"flex",width:"100vw",height:"100vh",position:"absolute",justifyContent:"center",zIndex:"8000"}}>
+  return (<>{<div style={{visibility:load?"hidden":"hidden",position:"absolute",height:"100vh"}}>
 
   
     <div class="container">

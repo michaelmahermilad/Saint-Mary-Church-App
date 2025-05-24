@@ -1,8 +1,11 @@
 {
-  "database": {
+   "database": {
     "rules": "database.rules.json"
   },
+
+  
   "hosting": {
+    "site": "saint-mary-chruch-service-attendance-app",
     "public": "build",
     "ignore": [
       "firebase.json",

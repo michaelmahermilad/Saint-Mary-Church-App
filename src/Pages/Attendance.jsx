@@ -2,60 +2,46 @@ import React, { useEffect, useState } from "react";
 
 import QrReader from "react-qr-reader";
 import { NavLink } from "react-router-dom";
-import db from "../firebase";
+import { database } from "../firebase";
 import yes from "./yes.webp";
-import {
-  getDatabase,
-  limitToLast,
-  onValue,
-  orderByChild,
-  query,
-  ref,
-  remove,
-  set,
-} from "firebase/database";
+import { ref, onValue, remove, set } from "firebase/database";
 import { addHours, addMinutes } from "date-fns";
+
 function Attendance() {
   const [arr, setArr] = useState([]);
-  useEffect(() => {
-    const db = getDatabase();
-
-    const a = query(ref(db, "livelecs/"), orderByChild("sort"), limitToLast(7));
-    onValue(a, (snapshot) => {
-      const data2 = snapshot.val();
-      if (data2 !== undefined && data2!== null) {
-        const arrayOfObjects = Object.values(data2);
-
-        console.log(arrayOfObjects);
-        const l = arrayOfObjects.reverse();
-        setArr(l);
-      }else setArr([])
-    });
   
-   
-  }, []);
   useEffect(() => {
-setInterval(() => {
-  for (let i = 0; i < arr.length; i++) { 
-    
-       if (new Date().toISOString().split(".")[0] > arr[i]?.sort) {
-        const db = getDatabase();
- 
-        remove(ref(db, "livelecs/" + arr[i]?.sort));
- 
+    const attendanceRef = ref(database, "livelecs/");
+    onValue(attendanceRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const arrayOfObjects = Object.values(data);
+        setArr(arrayOfObjects.reverse());
+      } else {
+        setArr([]);
       }
-    }
-}, 60000);
-    
+    });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      arr.forEach(item => {
+        if (new Date().toISOString().split(".")[0] > item?.sort) {
+          remove(ref(database, "livelecs/" + item?.sort));
+        }
+      });
+    }, 60000);
+    return () => clearInterval(interval);
   }, [arr]);
+
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
   const [duration, setDuration] = useState(1);
   const [score, setScore] = useState(1);
   const [error, setError] = useState("");
+
   function writelecData(name, year, duration, score, Date) {
-    const db = getDatabase();
-    set(ref(db, "livelecs/" + Date), {
+    set(ref(database, "livelecs/" + Date), {
       name,
       year,
       duration,

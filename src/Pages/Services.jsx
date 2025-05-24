@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import '../App.css';  
- import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import logo1 from "./logo1.png"
 import logo from "./logo.PNG"
 import Mama from "./Mama.png"
@@ -11,14 +10,12 @@ import Comments from './Comments';
 import * as XLSX from "xlsx";
 import Questions from './Questions';
 
-import { getDatabase, ref, set } from 'firebase/database';
+import { database } from '../firebase';
+import { ref, set } from 'firebase/database';
 import { Link } from 'react-router-dom';
 const SheetJSFT = [
   "xlsx",
-  
-
   "csv",
-
 ]
   .map(function(x) {
     return "." + x;
@@ -54,85 +51,156 @@ render() {
   }
 }
 function Services() {
-  function writeUserData(title, link, link2, Year ,Date) {
-    const db = getDatabase();
-    set(ref(db, 'lectures/' + Date), {
-      title,
-      link,
-      link2,Year,
-      sort:Date
-    });
-  }
-  function writeSheet(Sheet,date,Year) {
-    const db = getDatabase();
-    set(ref(db, 'sheets/' + date), {
-      Sheet,
-      sort:date
-      ,Year
-    });
-  }
-  const [questions,setQuestions] =useState(null)  
-  const [title, setTitle] = useState("")
-  const [link, setLink] = useState("")
-  const [link2, setLink2] = useState("")
-  const [error, setError] = useState("")
-  const [Links, setLinks] = useState([])
-  const [task,setTask]= useState(false)
-  const [Year,SetYear]=useState("السنة الاولي")
-  function handleFile(file /*:File*/) {  setQuestions(null)
-    /* Boilerplate to set up FileReader */
+  const [questions, setQuestions] = useState(null);
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
+  const [link2, setLink2] = useState("");
+  const [error, setError] = useState("");
+  const [Links, setLinks] = useState([]);
+  const [task, setTask] = useState(false);
+  const [Year, SetYear] = useState("السنة الاولي");
+  const [isVisible, setIsvisible] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const writeUserData = async (title, link, link2, Year, Date) => {
+    try {
+      await set(ref(database, 'lectures/' + Date), {
+        title,
+        link,
+        link2,
+        Year,
+        sort: Date
+      });
+      return true;
+    } catch (err) {
+      console.error("Error writing lecture data:", err);
+      setError("حدث خطأ أثناء حفظ المحاضرة");
+      return false;
+    }
+  };
+
+  const writeSheet = async (Sheet, date, Year) => {
+    try {
+      await set(ref(database, 'sheets/' + date), {
+        Sheet,
+        sort: date,
+        Year
+      });
+      return true;
+    } catch (err) {
+      console.error("Error writing sheet data:", err);
+      setError("حدث خطأ أثناء حفظ الكويز");
+      return false;
+    }
+  };
+
+  const handleFile = async (file) => {
+    if (!file) return;
+    
+    setQuestions(null);
     const reader = new FileReader();
     const rABS = !!reader.readAsBinaryString;
-    reader.onload = e => {
-      /* Parse data */
-      const bstr = e.target.result;
-      const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
-      /* Get first worksheet */
-      const wsname = wb.SheetNames[0];
-      const ws = wb.Sheets[wsname];
-   
-      /* Convert array of arrays */
-      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      /* Update state */
-  
-     let arr
-      let obj
-       let final=[]
-     let Year=0
-      data.forEach((el,i) => {
-        if (i===0){
-      arr=el.map((e,i)=>e.toString().trim().toLowerCase())
-        }
-     
-      
-    
-        
-      });
-      data.forEach((element,i) => { 
-        Year=element[0]
-         if(i!==0){
-        element.forEach((element,i) => {
-      
-        let e=element.toString()?.toLowerCase()?.trim()
-       
-            obj={...obj,[arr[i]]:e}
-        });
-       final.push(obj)}
-       element.forEach((element,i) => {
-        obj={...obj,[arr[i]]:""}
-    });
-      });
-      writeSheet(final,new Date().toISOString().split(".")[0] ,Year)
-         setQuestions(final)
-           setTask(true);
 
-        
+    reader.onload = async (e) => {
+      try {
+        const bstr = e.target.result;
+        const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+        let arr;
+        let obj;
+        let final = [];
+        let Year = 0;
+
+        data.forEach((el, i) => {
+          if (i === 0) {
+            arr = el.map(e => e.toString().trim().toLowerCase());
+          }
+        });
+
+        data.forEach((element, i) => {
+          Year = element[0];
+          if (i !== 0) {
+            element.forEach((element, i) => {
+              let e = element.toString()?.toLowerCase()?.trim();
+              obj = { ...obj, [arr[i]]: e };
+            });
+            final.push(obj);
+          }
+          element.forEach((element, i) => {
+            obj = { ...obj, [arr[i]]: "" };
+          });
+        });
+
+        const success = await writeSheet(final, new Date().toISOString().split(".")[0], Year);
+        if (success) {
+          setQuestions(final);
+          setTask(true);
+        }
+      } catch (err) {
+        console.error("Error processing file:", err);
+        setError("حدث خطأ أثناء معالجة الملف");
+      }
     };
-  
+
+    if (rABS) {
+      reader.readAsBinaryString(file);
+    } else {
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const fun3 = async (e) => {
+    e.preventDefault();
     
-    if (rABS) reader.readAsBinaryString(file);
-    else reader.readAsArrayBuffer(file);
-  }
+    if (!title.trim()) {
+      setError("لم يتم وضع عنوان للمحاضرة");
+      return;
+    }
+
+    if (title.length < 4) {
+      setError("العنوان قصير جدا");
+      return;
+    }
+
+    if (link.trim() && !matchYoutubeUrl(link.trim()) && !getSoundCloudInfo(link.trim())) {
+      setError("لم يتم ادخال رابط يوتيوب او ساوند كلاود بشكل صحيح");
+      return;
+    }
+
+    if (!link.trim().startsWith("https") && link.trim()) {
+      setError("الرابط ليس كاملا");
+      return;
+    }
+
+    if (!link.trim() && !link2.trim()) {
+      setError("لم يتم ادخال اي رابط");
+      return;
+    }
+
+    if (link2.trim() && !link2.trim().includes("https://drive.google.com")) {
+      setError("يرجي التأكد من ادخال رابط جوجل درايف بشكل صحيح");
+      return;
+    }
+
+    const success = await writeUserData(
+      title,
+      link,
+      link2,
+      Year,
+      new Date().toISOString().split(".")[0]
+    );
+
+    if (success) {
+      setTitle("");
+      setLink("");
+      setLink2("");
+      setError("");
+    }
+  };
+
   const make_cols = refstr => {
     let o = [],
       C = XLSX.utils.decode_range(refstr).e.c + 1;
@@ -158,48 +226,6 @@ function Services() {
       return url.match(p)[1];
     }
     return false;
-  }
-  function fun3(e) {
-    e.preventDefault()   
-     if (title.length == 0) {
-      setIsvisible(true)
-      setError("لم يتم وضع عنوان للمحاضرة")
-      return
-    }
-  
-    if(link.trim()!=""){
-   
-    if(!matchYoutubeUrl(link.trim()) && !getSoundCloudInfo(link.trim())){
-      setError("لم يتم ادخال رابط يوتيوب او ساوند كلاود بشكل صحيح")
-      return
-    }  
-     if(!link.trim().startsWith("https") ){
-      setError("الرابط ليس كاملا")
-      return
-    }}
-    
-    if(link.trim()=="" && link2.trim()==""){
-      
-        setError("لم يتم ادخال اي رابط")
-        return
-      }
-      
-      if(!link2.trim().includes("https://drive.google.com")){
-      
-        setError("يرجي التأكد من ادخال رابط جوجل درايف بشكل صحيح")
-        return
-      }
-    if (title.length < 4) {
-      setIsvisible(true)
-      setError("العنوان قصير جدا")
-      return
-    }
-    writeUserData(title, link, link2, Year,new Date().toISOString().split(".")[0] )
-    setTitle("")
-    setLink("")
-    setLink2("")
-     setError("")
-   
   }
   const img = new Image(); // Create new img element  
   img.src = Mama; // Set source path
@@ -233,8 +259,6 @@ function Services() {
 
   }, [])
  
-  const [isVisible, setIsvisible] = useState(false)
-  const [show, setShow] = useState(false)
 
   return (<><>
     <div   className='Main' style={{ position:"relative", backgroundColor: "#f5f5f5",borderTop:"4px solid rgb(244 231 198)", width: "100vw",overflowX:"hidden"  }}>

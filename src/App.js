@@ -1,87 +1,93 @@
-
-import { Navigate, Routes } from "react-router-dom";
+import { Navigate, Routes, useLocation } from "react-router-dom";
 import { BrowserRouter, Route } from "react-router-dom";
-import Login from "./Pages/Login";
-import Services from "./Pages/Services";
-import User from "./Pages/User";
+import { Suspense, lazy, useEffect, useState, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Navigation from "./components/Navigation";
+import LazyLoadWrapper from "./components/LazyLoadWrapper";
+import Footer from "./components/Footer";
 import "./App.css";
-import Attendance from "./Pages/Attendance";
-import Attendance1 from "./Pages/Attendance1";
-import Qr from "./Pages/Qr";
-import { useEffect } from "react";
-function App() {
  
+
+// Lazy load components
+const Login = lazy(() => import("./Pages/Login"));
+const Services = lazy(() => import("./Pages/Services"));
+const User = lazy(() => import("./Pages/User"));
+const Attendance = lazy(() => import("./Pages/Attendance"));
+ const Qr = lazy(() => import("./Pages/Qr"));
+
+// Loading component
+const LoadingFallback = () => (
+  <div className="loading-container">
+    <div className="loading-spinner"></div>
+  </div>
+);
+
+// Navigation feedback component
+const NavigationFeedback = () => {
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [location]);
+
+  return isLoading ? <div className="page-loading" /> : null;
+};
+
+// Main App Content
+const AppContent = () => {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Login />}></Route>;
-          <Route
-            path="/activities"
-            element={
-              localStorage.getItem("go") == "7777777" ? (
-                <Services />
-              ) : (
-                <Navigate replace to="/" />
-              )
-            }
-          ></Route>
-          ;
-          <Route
-            path="/user/:displayName"
-            // the matching param will be available to the loader
-
-            // and the action
-            element={
-             
-                <User />
-              
-            }
-          ></Route>
-
-          ;
-          <Route
-            path="/user/:displayName/QR"
-            // the matching param will be available to the loader
-
-            // and the action
-            element={
-                 <Attendance1 />
-              
-            }
-          ></Route>
-          <Route
-            path="/attendance"
-            // the matching param will be available to the loader
-
-            // and the action
-            element={
-                 <Attendance />
-             
-            }
-          ></Route>
-             <Route
-            path="/:date/:name/:duration/:score"
-            // the matching param will be available to the loader
-
-            // and the action
-            element={
-                 <Qr />
-            
-            }
-          ></Route>
-          <Route
-            path=":Page"
-            element={
-              
-                <User />
-            
-            }
-          ></Route>
-          ;
-        </Routes>
+    <>
+       <div className="app">
+        <LazyLoadWrapper>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+               
+              <Route
+                path="/"
+                element={<> <User /></>}
+              />
+              <Route
+                path="/user/:displayName/QR"
+                element={<Attendance />}
+              />
+              <Route
+                path="/attendance"
+                element={<Attendance />}
+              />
+              <Route
+                path="/:date/:name/:duration/:score"
+                element={<Qr />}
+              />
+              <Route
+                path=":Page"
+                element={<User />}
+              />
+            </Routes>
+          </AnimatePresence> 
+        </LazyLoadWrapper>
+       
       </div>
-    </BrowserRouter>
+    </>
+  );
+};
+
+// Root App Component
+function App() {
+  return (
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

@@ -122,13 +122,13 @@ function Studies() {
 
 
       <iframe
-            style={{ minHeight:"20rem",width:"100%",border:"3px solid GOLD",borderRadius:"10px" ,margin:"auto" ,maxHeight:"40vh",backgroundColor:"rgba(236, 224, 167, 0.867)"}}
+            style={{ minHeight:"20rem",width:"100%",borderRadius:"10px" ,margin:"auto" ,maxHeight:"40vh",backgroundColor:"rgba(244, 243, 240, 0.867)"}}
               src="https://www.youtube.com/embed/s0da9g43i2k"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             ></iframe>
 
-        {Comments?.length > 0 ? (
+        {/*Comments?.length > 0 ? (
           Comments?.map((i) => {
             if (i?.Year == "السنة الاولي اعداد خدام" && Year == "One") {
               return (
@@ -149,7 +149,7 @@ function Studies() {
           <>
              <Loading />
           </>
-        )}
+        )*/}
       </div>
     </div>
   );
