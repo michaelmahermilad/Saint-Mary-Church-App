@@ -1460,10 +1460,7 @@ margin-top: 1rem;
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
+  
 
   .nav-indicator {
     display: none;

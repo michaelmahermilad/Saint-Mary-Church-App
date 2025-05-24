@@ -4,7 +4,6 @@ import NavBar from "./NavBar";
 import beach from "./beach.jpg";
 import { Link } from "react-router-dom";
 import Myload from "./Myload";
-import Footer from "../components/Footer";
 
 function User() {
   const [load,setLoad]=useState(false)
@@ -48,7 +47,7 @@ function User() {
           <img id="img"   onLoad={()=>{
               setTimeout(() => {
                 setLoad(true)
-              }, 0);
+              }, 3000);
              
           }} className="background" src={beach} />
         </div>
@@ -83,9 +82,7 @@ function User() {
        
          
       </div>
-    </div>
-    <Footer/>
-    </>
+    </div></>
   );
 }
 
